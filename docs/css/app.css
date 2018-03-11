@@ -303,6 +303,14 @@ body {
     background-size: cover;
 }
 
+.box-bolt {
+    background-image: url("../img/wood.jpg");
+    height: 30px;
+    position: absolute;
+    width: 100%;
+    top: 10%;
+    left: 0;
+}
 
 .door-riddle__button_gear-unlocker {
     margin: auto;

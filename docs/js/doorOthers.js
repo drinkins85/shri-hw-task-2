@@ -73,7 +73,6 @@ function Door1(number, onUnlock) {
         boltCurrentPosition = 0,
         boltIsGestureStarted = false;
 
-
     locker.addEventListener('pointerdown', _onLockerPointerDown);
     locker.addEventListener('pointermove', _onLockerPointerMove);
     locker.addEventListener('pointerup', _onLockerPointerUp);
@@ -257,6 +256,7 @@ function Box(number, onUnlock) {
 
     var unlockButton = this.popup.querySelector('.door-riddle__button_gear-unlocker'),
         gear = this.popup.querySelector('.gear'),
+        boxBolt = this.popup.querySelector('.box-bolt'),
         isGearUnlocked = false,
         isRotationStarted = false,
         gearStartX = 0,
@@ -284,7 +284,7 @@ function Box(number, onUnlock) {
 
     function _onUnlockButtonPointerUp(e) {
         e.target.classList.remove('door-riddle__button_pressed');
-        isGearUnlocked = false;
+        //isGearUnlocked = false;
     }
 
     
@@ -337,6 +337,7 @@ function Box(number, onUnlock) {
 
         requestAnimationFrame(function() {
             e.target.style.transform = 'rotate(' + angle + 'deg)';
+            boxBolt.style.transform = 'translateX('+ angle + 'px)';
         });
         if (Math.abs(angle) > 300){
             this.unlock();
