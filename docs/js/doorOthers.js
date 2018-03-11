@@ -259,8 +259,9 @@ function Box(number, onUnlock) {
         gear = this.popup.querySelector('.gear'),
         isGearUnlocked = false,
         isRotationStarted = false,
-        gearCurrentPosition = 0,
-        gearStartPosition = 0;
+        gearStartX = 0,
+        gearStartY = 0,
+        angle  = 0;
 
 
     unlockButton.addEventListener('pointerdown', _onUnlockButtonPointerDown);
@@ -273,7 +274,6 @@ function Box(number, onUnlock) {
     gear.addEventListener('pointerup', _onGearPointerUp);
     gear.addEventListener('pointercancel', _onGearPointerUp);
     gear.addEventListener('pointerleave', _onGearPointerUp);
-
 
 
     function _onUnlockButtonPointerDown(e) {
@@ -292,8 +292,10 @@ function Box(number, onUnlock) {
         if (!isGearUnlocked){
             return
         }
-        gearCurrentPosition = gearStartPosition = e.pageX;
         isRotationStarted = true;
+        gearStartX = e.clientX;
+        gearStartY = e.clientY;
+
     }
     
     function _onGearPointerMove(e) {
@@ -301,14 +303,48 @@ function Box(number, onUnlock) {
             return;
         }
 
-        gearCurrentPosition = e.pageX;
-        var diffX = gearCurrentPosition - gearStartPosition;
+        if (e.clientY < document.documentElement.clientHeight/2){
+
+            if (e.clientX > gearStartX){
+                angle += 2;
+            } else {
+                angle -= 2;
+            }
+
+        } else {
+            if (e.clientX < gearStartX){
+                angle += 2;
+            } else {
+                angle -= 2;
+            }
+        }
+
+        if (e.clientX > document.documentElement.clientWidth/2){
+
+            if (e.clientY > gearStartY){
+                angle += 2;
+            } else {
+                angle -= 2;
+            }
+
+        } else {
+            if (e.clientY < gearStartY){
+                angle += 2;
+            } else {
+                angle -= 2;
+            }
+        }
+
         requestAnimationFrame(function() {
-            e.target.style.transform = 'rotate(' + diffX + 'deg)';
+            e.target.style.transform = 'rotate(' + angle + 'deg)';
         });
-        if (Math.abs(diffX) > 100){
+        if (Math.abs(angle) > 300){
             this.unlock();
         }
+
+        gearStartX = e.clientX;
+        gearStartY = e.clientY;
+
     }
     
     function _onGearPointerUp() {
